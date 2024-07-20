@@ -16,7 +16,7 @@ export const SideNav = () => {
   const navItems = [
     {
       icon: revereLogo,
-      text: '',
+      text: 'Revere',
       route: '/',
       class: 'logo-item',
     },

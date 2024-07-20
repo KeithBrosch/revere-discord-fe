@@ -4,13 +4,13 @@ import { SideNav } from './components/SideNav/SideNav'
 import './App.css'
 
 function App() {
-  const [count, setCount] = useState(0)
 
   return (
     <>
       <SideNav/>
       <div className="outlet-container">
-      <Outlet />
+        {/* todo: implement navigable breadcrumbs */}
+        <Outlet />
       </div>
     </>
   )
