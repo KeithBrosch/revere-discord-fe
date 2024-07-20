@@ -1,3 +1,8 @@
+.game-card-container {
+  display: flex;
+  flex-direction: column;
+}
+
 .game-card {
   box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 5px;
   width: 150px;
@@ -7,6 +12,7 @@
   display: flex;
   align-items: center;
   justify-content: center;
+  margin-bottom: 5px;
 }
 
 .game-card .game-name {
