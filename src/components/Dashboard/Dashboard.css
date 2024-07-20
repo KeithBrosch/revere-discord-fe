@@ -1,0 +1,8 @@
+.supscriptions {
+
+}
+
+.subscriptions-grid {
+  display: flex;
+  gap: 20px;
+}

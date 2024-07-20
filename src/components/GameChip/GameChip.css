@@ -1,0 +1,22 @@
+.game-chip {
+  padding: 0 5px;
+  font-size: 10px;
+  color: white;
+  border-radius: 15px;
+}
+
+.valorant {
+  background: #ff3050;
+}
+
+.counter-strike-2 {
+  background: #df30ff;
+}
+
+.call-of-duty {
+  background: #50ff30;
+}
+
+.league-of-legends {
+  background: #30ffdf;
+}
