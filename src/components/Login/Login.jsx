@@ -1,8 +1,25 @@
-import React from 'react'
+import './Login.css';
+import { supabase } from '../../utils/createSupabaseClient';
+import { Auth } from '@supabase/auth-ui-react';
+import { ThemeSupa } from '@supabase/auth-ui-shared';
+import { useNavigate } from 'react-router-dom';
 
 export const Login = () => {
-  // child routes = Login and Register
+  const navigate = useNavigate();
+
+  supabase.auth.onAuthStateChange(async (event) => {
+    console.log(event);
+    if (event == "SIGNED_IN") {
+        navigate("/success");
+    }
+});
   return (
-    <div>Login</div>
+    <div className='login'>
+      <Auth 
+        supabaseClient={supabase}
+        onlyThirdPartyProviders={true}
+        providers={["discord"]}
+      />
+    </div>
   )
 }

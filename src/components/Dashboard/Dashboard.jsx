@@ -1,23 +1,27 @@
 import './Dashboard.css';
 import React, { useEffect, useState } from 'react';
+import { useOutletContext } from 'react-router-dom';
 import { supabase } from '../../utils/createSupabaseClient';
 import { TeamCard } from '../TeamCard/TeamCard';
 
 export const Dashboard = () => {
-  const [userId, setUserId] = useState(1);
+  const { user } = useOutletContext();
+  const [userDiscordId, setUserDiscordId] = useState(user?.user_metadata?.provider_id || -1);
   const [userSubscriptions, setUserSubscriptions] = useState([]);
   const [mostSubscriptions, setMostSubscriptions] = useState([]);
 
   useEffect(() => {
-    fetchUserSubscriptions();
-    fetchMostSubscribed(userId);
-  }, [userId]);
+    if (userDiscordId !== -1) {
+      fetchUserSubscriptions(userDiscordId);
+      fetchMostSubscribed(userDiscordId);
+    }
+  }, [userDiscordId]);
 
-  async function fetchUserSubscriptions() {
+  async function fetchUserSubscriptions(id) {
     const { data } = await supabase
       .from('subscriptions')
       .select('team_id, teams(*, games(*))')
-      .eq('user_id', userId);
+      .eq('user_discord_id', id);
 
     setUserSubscriptions(data);
   }
@@ -74,7 +78,7 @@ export const Dashboard = () => {
       // Sort teams by subscription count in descending order
       teamsWithCounts.sort((a, b) => b.teams.subscription_count - a.teams.subscription_count);
 
-      console.log('Teams with most subscriptions that user is not subscribed to:', teamsWithCounts);
+      // console.log('Teams with most subscriptions that user is not subscribed to:', teamsWithCounts);
       setMostSubscriptions(teamsWithCounts.filter((team) => team.teams.subscription_count > 0));
     } catch (error) {
       console.error(error.message);
@@ -89,7 +93,7 @@ export const Dashboard = () => {
         <div className="subscriptions-grid">
           {/* todo: make a TeamsCarousel component and use it here and below */}
           {userSubscriptions && userSubscriptions.map((subscription) => (
-            <TeamCard key={subscription.teams.id} teamInfo={subscription.teams} subscribed={true}/>
+            <TeamCard key={`your-subscription-${subscription.teams.id}`} teamInfo={subscription.teams} subscribed={true}/>
           ))}
         </div>
       </div>
@@ -98,7 +102,7 @@ export const Dashboard = () => {
         <div className="most-subscriptions-grid">
           {mostSubscriptions && mostSubscriptions.map((subscription) => (
             <div className='most-subscribed-card'>
-              <TeamCard key={subscription.teams.id} teamInfo={subscription.teams} />
+              <TeamCard key={`suggested-teams-${subscription.teams.id}`} teamInfo={subscription.teams} />
               <span className='subscriber-count'>{subscription.teams.subscription_count} {subscription.teams.subscription_count > 1 ? 'subscribers' : 'subscriber'}</span>
             </div>
           ))}

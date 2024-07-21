@@ -1,71 +1,64 @@
-import './SideNav.css'
-import { Link } from "react-router-dom";
+import './SideNav.css';
+import { NavLink } from "react-router-dom";
 import revereLogo from '../../assets/horse-head-solid.svg';
-import teamsIcon from '../../assets/plus-solid.svg'
-import settingsIcon from '../../assets/gear-solid.svg'
-import aboutIcon from '../../assets/circle-info-solid.svg'
-import faqIcon from '../../assets/question-solid.svg'
-import feedbackIcon from '../../assets/comment-solid.svg'
-import loginIcon from '../../assets/right-from-bracket-solid.svg'
-import logoutIcon from '../../assets/right-from-bracket-solid.svg'
-import { useState } from 'react';
 
-export const SideNav = () => {
-  const [isLoggedIn, setIsLoggedIn] = useState(false);
+import { useNavigate } from 'react-router-dom';
+import { ThemeSupa } from '@supabase/auth-ui-shared';
+import { supabase } from '../../utils/createSupabaseClient';
+import { Auth } from '@supabase/auth-ui-react';
+
+export const SideNav = ({ user, setUser }) => {
+  const navigate = useNavigate();
+
+  supabase.auth.onAuthStateChange(async (event) => {
+    if (event === "SIGNED_IN") {
+      navigate("/success");
+    }
+  });
+
+  const signOutUser = async () => {
+    const { error } = await supabase.auth.signOut();
+    if (error) {
+      console.error('Error signing out:', error);
+    } else {
+      setUser({});
+      navigate('/');
+    }
+  };
 
   const navItems = [
-    {
-      icon: revereLogo,
-      text: 'Revere',
-      route: '/',
-      class: 'logo-item',
-    },
-    {
-      icon: teamsIcon,
-      text: 'Teams',
-      route: '/teams',
-      class: '',
-    },
-    {
-      icon: settingsIcon,
-      text: 'Settings',
-      route: '/settings',
-      class: '',
-    },
-    {
-      icon: aboutIcon,
-      text: 'About',
-      route: '/about',
-      class: '',
-    },
-    {
-      icon: faqIcon,
-      text: 'FAQ',
-      route: '/faq',
-      class: '',
-    },
-    {
-      icon: feedbackIcon,
-      text: 'Feedback',
-      route: '/feedback',
-      class: '',
-    },
-    {
-      icon: isLoggedIn ? logoutIcon : loginIcon,
-      text: isLoggedIn ? 'Log Out' :  'Log In',
-      route: isLoggedIn ? 'logout' :  'login',
-      class: 'auth',
-    },
-  ]
+    { text: 'Dashboard', route: '/', class: '' },
+    { text: 'Teams', route: '/teams', class: '' },
+    { text: 'Settings', route: '/settings', class: '' },
+    { text: 'About', route: '/about', class: '' },
+    { text: 'FAQ', route: '/faq', class: '' },
+    { text: 'Feedback', route: '/feedback', class: '' },
+  ];
 
   return (
     <div className="side-nav">
-      {navItems.map((item) => (
-        <Link key={item.route} to={item.route} className={`nav-item ${item.class}`}>
-          <img src={item.icon} alt={item.text} />
-          <span className='title'>{item.text}</span>
-        </Link>
-      ))}
+      <div className="logo-container">
+        <img src={revereLogo} alt='Revere' />
+      </div>
+      <div className="nav-items">
+        {navItems.map((item) => (
+          <NavLink key={item.route} to={item.route} className={(navData) => (navData.isActive ? `active nav-item ${item.class}` : `nav-item ${item.class}`)}>
+            <span className='title'>{item.text}</span>
+          </NavLink>
+        ))}
+      </div>
+      <div className="auth-container">
+        {Object.keys(user).length === 0 ? (
+          <Auth 
+            supabaseClient={supabase}
+            onlyThirdPartyProviders={true}
+            appearance={{ theme: ThemeSupa }}
+            providers={["discord"]}
+          />
+        ) : (
+          <button onClick={signOutUser}>Sign Out</button>
+        )}
+      </div>
     </div>
-  )
-}
+  );
+};

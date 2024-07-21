@@ -7,6 +7,7 @@ import { About } from '../components/About/About';
 import { FAQ } from '../components/FAQ/FAQ';
 import { Feedback } from '../components/Feedback/Feedback';
 import { Login } from '../components/Login/Login';
+import { AuthSuccess } from '../components/AuthSuccess/AuthSuccess';
 import { Logout } from '../components/Logout/Logout';
 import { NotFound } from '../components/NotFound/NotFound';
 
@@ -20,6 +21,7 @@ export const router = createBrowserRouter(
       <Route path="faq" element={<FAQ />}/>
       <Route path="feedback" element={<Feedback />}/>
       <Route path="login" element={<Login />}/>
+      <Route path="success" element={<AuthSuccess />}/>
       <Route path="logout" element={<Logout />}/>
       <Route path="*" element={<NotFound />}/>
     </Route>
