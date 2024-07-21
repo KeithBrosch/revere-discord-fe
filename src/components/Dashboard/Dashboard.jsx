@@ -48,7 +48,7 @@ export const Dashboard = () => {
       const { data: subscribedTeams, error: subscribedTeamsError } = await supabase
         .from('subscriptions')
         .select('team_id')
-        .eq('user_id', userId);
+        .eq('user_discord_id', userDiscordId);
 
       if (subscribedTeamsError) {
         throw new Error(`Error fetching subscribed teams: ${subscribedTeamsError.message}`);
