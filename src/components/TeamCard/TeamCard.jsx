@@ -7,7 +7,7 @@ export const TeamCard = ({teamInfo, subscribed = false}) => {
       {/* todo: use defulat game logos for teams without logos */}
       <img src={teamInfo.logo || teamInfo.games.icon} alt={teamInfo.name} />
       <span>{teamInfo.name}</span>
-      <GameChip game={teamInfo.games}/>
+      <GameChip game={teamInfo.games || teamInfo}/>
     </div>
   )
 }

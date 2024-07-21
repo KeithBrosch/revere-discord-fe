@@ -3,7 +3,6 @@
   width: calc(100vw - 100px);
   height: 50px;
   box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;
-  cursor: pointer;
   display: flex;
   align-items: center;
 }
@@ -29,6 +28,7 @@
 }
 
 .nav-items .nav-item {
+  cursor: pointer;
   text-transform: none;
   color: inherit;
   transition: color 0.2s ease-in-out;
@@ -49,10 +49,12 @@
   }
 
   path {
-    fill: #ff3050;
+    transition: all 0.2s ease-in-out;
+    fill: #000000;
   }
 
   button {
+    cursor: pointer;
     background-color: #fff;
     border: 1px solid #000000;
     transition: all 0.2s ease-in-out;
@@ -65,5 +67,12 @@
       transition: all 0.2s ease-in-out;
       background-color: inherit !important;
     }
+  }
+}
+
+.auth-container button:hover {
+  path {
+    fill: #ff3050;
+    transition: all 0.2s ease-in-out;
   }
 }

@@ -1,8 +1,9 @@
 import './GameChip.css'
 
-const GameChip = ({game}) => {
+const GameChip = ({gameInfo}) => {
+  
   return (
-    <div className={`game-chip ${game.name.toLowerCase()}`}>{game.name.replaceAll('-', ' ')}</div>
+    <div className={`game-chip ${gameInfo.name.toLowerCase()}`}>{gameInfo.name.replaceAll('-', ' ')}</div>
   )
 }
 

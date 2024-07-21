@@ -1,15 +1,20 @@
-import { useState } from 'react'
-import { supabase } from '../../utils/createSupabaseClient'
-import { useEffect } from 'react';
+import { useState, useEffect } from 'react';
+import { supabase } from '../../utils/createSupabaseClient';
+import { useOutletContext } from 'react-router-dom';
 import './Teams.css';
 import GameCard from '../GameCard/GameCard';
-
-import dotenv from 'dotenv';
+import { TeamCard } from '../TeamCard/TeamCard';
 
 export const Teams = () => {
-  const [allGames, setAllGames] = useState([]);
-  const [selectedGameId, setSelectedGameId] = useState(-1);
+  const { allGames } = useOutletContext();
   const [allTeams, setAllTeams] = useState([]);
+  const [selectedGame, setSelectedGame] = useState();
+
+  useEffect(() => {
+    if (allGames && allGames.length > 0) {
+      setSelectedGame(prevSelectedGame => prevSelectedGame || allGames[0]);
+    }
+  }, [allGames]);
 
   // get games on mount
   useEffect(() => {
@@ -18,39 +23,47 @@ export const Teams = () => {
 
   // get teams whenever selected game changes
   useEffect(() => {
-    fetchTeams();
-  }, [selectedGameId])
+    if (selectedGame) {
+      console.log(selectedGame);
+      fetchTeams();
+    }
+  }, [selectedGame]);
+
+  const setGameFilter = (event) => {
+    setSelectedGame(event);
+  };
 
   async function fetchGames() {
     const { data } = await supabase
       .from('games')
       .select('*');
-
-      console.log(data);
-
-      setAllGames(data);
+    // Update allGames here if needed
   }
 
   async function fetchTeams() {
     const { data } = await supabase
       .from('teams')
       .select('*')
-      .eq('game_id', selectedGameId);
-
-      console.log(data);
-
-      setAllTeams(data);
+      .eq('game_id', selectedGame.id);
+    setAllTeams(data);
   }
 
   return (
     <div>
-      {/* This route will have 2 child routes: My Subscriptions, and Explore All Teams */}
       <div className="filters">
         <h2>Filter Teams by Game</h2>
         <div className="games-filter">
-          {allGames && allGames.map((game) => <GameCard key={game.id} gameInfo={game} setGameFilter={(event) => setSelectedGameId(event)} />)}
+          {allGames && allGames.map((game) => (
+            <GameCard key={game.id} gameInfo={game} setGameFilter={setGameFilter} />
+          ))}
         </div>
       </div>
+      {allTeams.length > 0 && <div className="teams">
+        {allTeams.map((team) => (
+          <span>{JSON.stringify(team)}</span>
+          // <TeamCard key={`team-${team.id}`} teamInfo={team} />
+        ))}
+      </div>}
     </div>
-  )
-}
+  );
+};
