@@ -4,13 +4,13 @@
 
 .subscriptions-grid, .most-subscriptions-grid {
   display: flex;
+  flex-wrap: wrap;
   gap: 20px;
   margin-bottom: 100px;
 }
 
 .most-subscribed-card {
   display: flex;
-  flex-wrap: wrap;
   flex-direction: column;
   align-items: center;
 }

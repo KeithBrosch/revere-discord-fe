@@ -1,18 +1,22 @@
 @import url("https://fonts.googleapis.com/css2?family=Poppins&display=swap");
 
-#root {
+#root, html, body {
   font-family: "Poppins", sans-serif;
   min-width: 100vw;
   min-height: 100vh;
   display: flex;
   flex-direction: column;
+  overflow-x: hidden;
 }
 
 .outlet-container {
   padding: 20px 50px;
   width: calc(100vw - 100px);
   flex: auto;
-}
 
+  >* {
+    width: 100%;
+  }
+}
 
 

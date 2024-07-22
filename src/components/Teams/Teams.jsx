@@ -12,21 +12,20 @@ export const Teams = () => {
 
   // when a game is clicked, set it as the active game and fetch teams
   const setGameFilter = (event) => {
+    console.log("setGameFilter", event)
     setSelectedGame(event);
-    fetchTeams(selectedGame);
+    fetchTeams(event);
   }
 
   async function fetchTeams(selectedGame) {
     console.log(selectedGame);
     if (selectedGame?.id) {
-      // startLoading();
       const { data } = await supabase
         .from('teams')
         .select('*')
         .eq('game_id', selectedGame.id);
 
       setAllTeams(data);
-      // stopLoading();
     }
   }
 

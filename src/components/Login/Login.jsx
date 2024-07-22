@@ -8,7 +8,6 @@ export const Login = () => {
   const navigate = useNavigate();
 
   supabase.auth.onAuthStateChange(async (event) => {
-    console.log(event);
     if (event == "SIGNED_IN") {
         navigate("/success");
     }
