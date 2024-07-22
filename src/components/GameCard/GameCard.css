@@ -1,6 +1,9 @@
 .game-card-container {
   display: flex;
   flex-direction: column;
+  &.deselected {
+    opacity: 0.5;
+  }
 }
 
 .game-card {
