@@ -60,6 +60,10 @@
     transition: all 0.2s ease-in-out;
     outline: none !important;
     font-size: 14px;
+    padding: 10px 15px;
+    border-radius: 5px;
+    font-size: 14px;
+    color: #000;
 
     &:hover {
       border-color: #ff3050;

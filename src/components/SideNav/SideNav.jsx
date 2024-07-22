@@ -1,3 +1,4 @@
+import React, { useEffect } from 'react';
 import './SideNav.css';
 import { NavLink } from "react-router-dom";
 import revereLogo from '../../assets/horse-head-solid.svg';
@@ -6,15 +7,23 @@ import { useNavigate } from 'react-router-dom';
 import { ThemeSupa } from '@supabase/auth-ui-shared';
 import { supabase } from '../../utils/createSupabaseClient';
 import { Auth } from '@supabase/auth-ui-react';
+import { toast } from 'react-toastify';
 
 export const SideNav = ({ user, setUser }) => {
   const navigate = useNavigate();
 
-  supabase.auth.onAuthStateChange(async (event) => {
-    if (event === "SIGNED_IN") {
-      navigate("/success");
-    }
-  });
+  useEffect(() => {
+    const { data: authListener } = supabase.auth.onAuthStateChange(async (event) => {
+      console.log(event);
+      if (event === "SIGNED_IN") {
+        navigate("/success");
+      }
+    });
+
+    return () => {
+      authListener.subscription.unsubscribe();
+    };
+  }, [navigate]);
 
   const signOutUser = async () => {
     const { error } = await supabase.auth.signOut();
@@ -23,6 +32,8 @@ export const SideNav = ({ user, setUser }) => {
     } else {
       setUser({});
       navigate('/');
+      window.location.reload();
+      toast.success(`Successfully logged out`);
     }
   };
 
