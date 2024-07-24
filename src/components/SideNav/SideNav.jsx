@@ -67,7 +67,10 @@ export const SideNav = ({ user, setUser }) => {
             providers={["discord"]}
           />
         ) : (
-          <button onClick={signOutUser}>Sign Out</button>
+          <button className="sign-out-button" onClick={signOutUser}>
+            <img src={user.user_metadata.picture} />
+            Sign Out
+          </button>
         )}
       </div>
     </div>

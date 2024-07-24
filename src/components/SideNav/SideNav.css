@@ -80,3 +80,22 @@
     transition: all 0.2s ease-in-out;
   }
 }
+
+.sign-out-button {
+  display: flex;
+  align-items: center;
+  img {
+    border: 1px solid #000000;
+    border-radius: 50%;
+    width: 30px;
+    margin-right: 10px;
+    transition: all 0.2s ease-in-out;
+  }
+
+  &:hover {
+    img {
+      border-color: #ff3050 !important;
+      transition: all 0.2s ease-in-out;
+    }
+  }
+}

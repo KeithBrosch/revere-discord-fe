@@ -17,5 +17,6 @@ h2 {
 .teams-grid {
   display: flex;
   flex-wrap: wrap;
+  justify-content: center;
   gap: 50px;
 }
